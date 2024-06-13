@@ -1,5 +1,6 @@
 import React from "react";
-import Juego from "./Juego"; // Asegúrate de importar el componente Juego desde la ubicación correcta
+import Juego from "./Juego";
+import styles from "../estilos/Listajuego.module.css";
 
 const ListaJuegos = () => {
   const juegos = [
@@ -24,7 +25,7 @@ const ListaJuegos = () => {
   ];
 
   return (
-    <div>
+    <div className={styles["Lista-container"]}>
       {juegos.map((juego, index) => (
         <Juego
           key={index}

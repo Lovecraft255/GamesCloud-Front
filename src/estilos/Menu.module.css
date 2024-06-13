@@ -1,0 +1,17 @@
+.menu-container {
+  display: flex;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+}
+
+.menu ul {
+  display: flex;
+  list-style: none;
+}
+
+.menu li {
+  margin-right: 10px; /* Ajusta el espaciado entre elementos */
+}
