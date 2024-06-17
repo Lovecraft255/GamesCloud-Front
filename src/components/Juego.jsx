@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../estilos/Juego.module.css";
 
 const Juego = ({ data }) => {
-  return data.map((e) => {
+  data.map((e) => {
     return (
       <div key={e.id} className={styles["juego-container"]}>
         <img src={e.imagens} />

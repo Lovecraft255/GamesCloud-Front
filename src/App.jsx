@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "./components/Menu";
 import ListaJuegos from "./components/ListaJuegos";
+import Barrabuscadora from "./components/BarraBuscadora";
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const [juegos, setJuegos] = useState();
+
+  useEffect(() => {
+    fetch("http://localhost:3001/game/getgames")
+      .then((res) => res.json())
+      .then((data) => {
+        setJuegos([data]);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
-    <div >
+    <div>
       <Menu />
-      <ListaJuegos />
+      <ListaJuegos juegos={juegos} />
     </div>
   );
 };
