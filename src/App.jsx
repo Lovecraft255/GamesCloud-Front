@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Menu from "./components/Menu";
 import ListaJuegos from "./components/ListaJuegos";
 import Barrabuscadora from "./components/BarraBuscadora";
+import SingIn from "./components/SingIn";
 
 const App = () => {
   const [juegos, setJuegos] = useState([]);
@@ -33,8 +34,9 @@ const App = () => {
   return (
     <div>
       <Menu />
-      <Barrabuscadora pedirDatos = {pedirDatos} />
+      <Barrabuscadora pedirDatos={pedirDatos} />
       <ListaJuegos juegos={juegos} />
+      <SingIn />
     </div>
   );
 };
