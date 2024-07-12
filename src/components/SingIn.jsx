@@ -18,12 +18,15 @@ const LogIn = () => {
           "Access-Control-Allow-Origin": "http://localhost:3001",
         },
         method: "POST",
-        body: { name: name, password: password },
+        body: JSON.stringify({ name: name, password: password }),
       });
       req
         .then((res) => res.json())
         .then((user) => {
           console.log(user);
+          {
+            <p>Inicio de sesion correcto</p>;
+          }
         });
     }
   };

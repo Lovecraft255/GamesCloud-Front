@@ -3,6 +3,7 @@ import Menu from "./components/Menu";
 import ListaJuegos from "./components/ListaJuegos";
 import Barrabuscadora from "./components/BarraBuscadora";
 import SingIn from "./components/SingIn";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 const App = () => {
   const [juegos, setJuegos] = useState([]);
@@ -33,10 +34,14 @@ const App = () => {
 
   return (
     <div>
-      <Menu />
+      <Router>
+        <Menu />
+        <Routes>
+          <Route path="/singnIn" element={<SingIn />} />
+          <Route path="/home" element={<ListaJuegos juegos={juegos} />} />
+        </Routes>
+      </Router>
       <Barrabuscadora pedirDatos={pedirDatos} />
-      <ListaJuegos juegos={juegos} />
-      <SingIn />
     </div>
   );
 };
