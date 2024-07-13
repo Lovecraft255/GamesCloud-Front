@@ -1,24 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const LogIn = () => {
+const SignUp = () => {
   const [name, setName] = useState("");
+  const [rol, setRol] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const logearse = async (e) => {
+  const registrarse = async (e) => {
     e.preventDefault();
-    if (name === "" && password === "") {
+
+    if (name === "" && rol === "" && password === "") {
       setError(true);
       return;
     } else {
-      let url = "http://localhost:3001/user/singin";
+      let url = "http://localhost:3001/user/signup";
       const req = fetch(url, {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "http://localhost:3001",
         },
+
         method: "POST",
-        body: JSON.stringify({ name: name, password: password }),
+        body: JSON.stringify({ name: name, rol: rol, password: password }),
       });
       req
         .then((res) => res.json())
@@ -30,23 +33,27 @@ const LogIn = () => {
 
   return (
     <section>
-      <form onSubmit={logearse} action="/singin" method="post">
+      <form onSubmit={registrarse} action="/signup" method="post">
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
+          type="text"
+          value={rol}
+          onChange={(e) => setRol(e.target.value)}
+        />
+        <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <button>Iniciar Sesion</button>
+        <button>Registrarse</button>
       </form>
-      {error && <p>Los 2 campos son obligatorios</p>}
+      {error && <p>Todos los campos son obligatorios</p>}
     </section>
   );
 };
 
-export default LogIn;
+export default SignUp;

@@ -3,6 +3,7 @@ import Menu from "./components/Menu";
 import ListaJuegos from "./components/ListaJuegos";
 import Barrabuscadora from "./components/BarraBuscadora";
 import SingIn from "./components/SingIn";
+import SignUp from "./components/SignUp";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
         </Routes>
       </Router>
       <Barrabuscadora pedirDatos={pedirDatos} />
+      <SignUp />
     </div>
   );
 };

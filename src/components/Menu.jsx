@@ -11,6 +11,7 @@ const links = [
     name: "Home",
     href: "/home",
   },
+  { name: "SignUp", href: "/signUp" },
 ];
 
 function Menu() {
@@ -22,16 +23,6 @@ function Menu() {
         </Link>
       ))}
     </div>
-
-    /*<div className={styles["menu-container"]}>
-      <nav className={styles.menu}>
-        <ul>
-          <li>Tienda</li>
-          <li>Mis Juegos</li>
-          <li>Nombre del Perfil</li>
-        </ul>
-      </nav>
-    </div>*/
   );
 }
 
