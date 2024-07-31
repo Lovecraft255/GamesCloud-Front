@@ -1,14 +1,14 @@
 import React from "react";
-import styles from "../estilos/Juego.module.css";
+
 
 const Juego = ({ data }) => {
   // data es un objeto, no es un array, por eso no te deja ejecutar el map
-  const { juegos } = data;
-
+  const  juegos  = data;
+  
   if (juegos.length != undefined) {
     return juegos.map((e) => {
       return (
-        <div key={e.id} className={styles["juego-container"]}>
+        <div key={e.id} className="inline-block mx-10 text-center">
           <img src={e.imagens} />
           <h2>{e.name}</h2>
           <p>{e.description}</p>

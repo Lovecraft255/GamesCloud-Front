@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Menu from "./Menu";
+import { useAuth } from "../auth/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -31,28 +34,36 @@ const SignUp = () => {
     }
   };
 
+  const auth = useAuth();
+
+  if (auth.isAuth) {
+    return <Navigate to="/home" />;
+  }
+
   return (
-    <section>
-      <form onSubmit={registrarse} action="/signup" method="post">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          value={rol}
-          onChange={(e) => setRol(e.target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Registrarse</button>
-      </form>
-      {error && <p>Todos los campos son obligatorios</p>}
-    </section>
+    <Menu>
+      <section>
+        <form onSubmit={registrarse} action="/signup" method="post">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="text"
+            value={rol}
+            onChange={(e) => setRol(e.target.value)}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button>Registrarse</button>
+        </form>
+        {error && <p>Todos los campos son obligatorios</p>}
+      </section>
+    </Menu>
   );
 };
 

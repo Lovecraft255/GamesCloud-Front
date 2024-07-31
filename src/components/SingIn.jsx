@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Menu from "./Menu";
+import { useAuth } from "../auth/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const LogIn = () => {
   const [name, setName] = useState("");
@@ -28,24 +31,32 @@ const LogIn = () => {
     }
   };
 
-  return (
-    <section>
-      <form onSubmit={logearse} action="/singin" method="post">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+  const auth = useAuth();
 
-        <button>Iniciar Sesion</button>
-      </form>
-      {error && <p>Los 2 campos son obligatorios</p>}
-    </section>
+  if (auth.isAuth) {
+    return <Navigate to="/home" />;
+  }
+
+  return (
+    <Menu>
+      <section>
+        <form onSubmit={logearse} action="/singin" method="post">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button>Iniciar Sesion</button>
+        </form>
+        {error && <p>Los 2 campos son obligatorios</p>}
+      </section>
+    </Menu>
   );
 };
 
