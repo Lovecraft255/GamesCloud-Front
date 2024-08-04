@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const links = [
   {
     name: "SignIn",
-    href: "/singnIn",
+    href: "/",
   },
   {
     name: "Home",

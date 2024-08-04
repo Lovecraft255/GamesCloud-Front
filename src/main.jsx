@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LogIn from "./components/SingIn.jsx";
-import SignUp from "./components/SignUp.jsx";
+import SignUp from "./components/SignUp.tsx";
 import ListaJuegos from "./components/Dashboard.jsx";
 import RutaProtegida from "./components/RutaProtegida.jsx";
 import AuthProvider from "./auth/AuthProvider.tsx";

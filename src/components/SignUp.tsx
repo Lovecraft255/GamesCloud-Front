@@ -1,40 +1,44 @@
 import { useState } from "react";
 import Menu from "./Menu";
 import { useAuth } from "../auth/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { API_URL } from "../auth/consts";
+import { AuthResponseError } from "../types/types";
+import React from "react";
 
-const SignUp = () => {
+function SignUp() {
   const [name, setName] = useState("");
   const [rol, setRol] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-
-  const registrarse = async (e) => {
+  const [error, setError] = useState("");
+  const auth = useAuth();
+  const goTo = useNavigate();
+  
+  async function registrarse(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    if (name === "" && rol === "" && password === "") {
-      setError(true);
-      return;
-    } else {
-      let url = "http://localhost:3001/user/signup";
-      const req = fetch(url, {
+    try {
+      const req = await fetch(`${API_URL}/user/signup`, {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:3001",
         },
 
         method: "POST",
         body: JSON.stringify({ name: name, rol: rol, password: password }),
       });
-      req
-        .then((res) => res.json())
-        .then((user) => {
-          console.log(user);
-        });
+      if (req.ok) {
+        console.log("usario creado");
+        setError("");
+        goTo("/");
+      } else {
+        console.log("Algo salio mal");
+        const json = (await req.json()) as AuthResponseError;
+        setError(json.body.error);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  const auth = useAuth();
+  }
 
   if (auth.isAuth) {
     return <Navigate to="/home" />;
@@ -43,6 +47,8 @@ const SignUp = () => {
   return (
     <Menu>
       <section>
+        <h1>Sign-up</h1>
+        {!!!error && <div className="errorMessage">{error}</div>}
         <form onSubmit={registrarse} action="/signup" method="post">
           <input
             type="text"
@@ -61,10 +67,9 @@ const SignUp = () => {
           />
           <button>Registrarse</button>
         </form>
-        {error && <p>Todos los campos son obligatorios</p>}
       </section>
     </Menu>
   );
-};
+}
 
 export default SignUp;
