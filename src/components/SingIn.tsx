@@ -1,35 +1,43 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Menu from "./Menu";
 import { useAuth } from "../auth/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { API_URL } from "../auth/consts";
+import { AuthResponseError } from "../types/types";
+import React from "react";
+
 
 const LogIn = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const goTo = useNavigate();
 
-  const logearse = async (e) => {
+  async function logearse(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (name === "" && password === "") {
-      setError(true);
-      return;
-    } else {
-      let url = "http://localhost:3001/user/singin";
-      const req = fetch(url, {
+    try {
+      const req = await fetch(`${API_URL}/user/singin`, {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:3001",
         },
+
         method: "POST",
         body: JSON.stringify({ name: name, password: password }),
       });
-      req
-        .then((res) => res.json())
-        .then((user) => {
-          console.log(user);
-        });
+      if (req.ok) {
+        console.log("Sesion iniciada");
+        setError("");
+        goTo("/home");
+      } else {
+        console.log("Algo salio mal");
+        const json = (await req.json()) as AuthResponseError;
+        setError(json.body.error);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }
 
   const auth = useAuth();
 

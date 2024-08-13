@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import { useState, useEffect } from "react";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LogIn from "./components/SingIn.jsx";
+import LogIn from "./components/SingIn.tsx";
 import SignUp from "./components/SignUp.tsx";
 import ListaJuegos from "./components/Dashboard.jsx";
 import RutaProtegida from "./components/RutaProtegida.jsx";
