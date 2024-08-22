@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Juego from "./Juego";
 
 const ListaJuegos = () => {
+
+
+  
   const [juegos, setJuegos] = useState([]);
 
   useEffect(() => {

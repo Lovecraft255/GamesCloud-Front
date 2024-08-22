@@ -3,15 +3,15 @@ import Menu from "./Menu";
 import { useAuth } from "../auth/AuthProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import { API_URL } from "../auth/consts";
-import { AuthResponseError } from "../types/types";
+import { AuthResponse, AuthResponseError } from "../types/types";
 import React from "react";
-
 
 const LogIn = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const goTo = useNavigate();
+  const auth = useAuth();
 
   async function logearse(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -20,16 +20,22 @@ const LogIn = () => {
         headers: {
           "Content-Type": "application/json",
         },
-
         method: "POST",
         body: JSON.stringify({ name: name, password: password }),
       });
       if (req.ok) {
-        console.log("Sesion iniciada");
+        console.log("Sesión iniciada");
         setError("");
-        goTo("/home");
+        const json = (await req.json()) as AuthResponse;
+        console.log(json.body);
+
+        if (json.body.accessToken && json.body.refreshToken) {
+          console.log("Entrarom");
+
+          auth.saveUser(json);
+        }
       } else {
-        console.log("Algo salio mal");
+        console.log("Algo salió mal");
         const json = (await req.json()) as AuthResponseError;
         setError(json.body.error);
         return;
@@ -39,16 +45,15 @@ const LogIn = () => {
     }
   }
 
-  const auth = useAuth();
-
-  if (auth.isAuth) {
+  if (auth.isAuth == true) {
     return <Navigate to="/home" />;
   }
 
   return (
     <Menu>
       <section>
-        <form onSubmit={logearse} action="/singin" method="post">
+        <form onSubmit={logearse} action="/signin" method="post">
+          {error && <div className="errorMessage">{error}</div>}
           <input
             type="text"
             value={name}
@@ -59,10 +64,8 @@ const LogIn = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
-          <button>Iniciar Sesion</button>
+          <button>Iniciar Sesión</button>
         </form>
-        {error && <p>Los 2 campos son obligatorios</p>}
       </section>
     </Menu>
   );
