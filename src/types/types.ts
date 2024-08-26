@@ -17,3 +17,11 @@ export interface User {
   name: string;
   rol: string;
 }
+
+export interface AccessTokenResponse {
+  statuscode: number;
+  body: {
+    accessToken: string;
+  };
+  error?: string;
+}
