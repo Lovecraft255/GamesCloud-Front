@@ -16,7 +16,10 @@ function SignUp() {
   
   async function registrarse(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log("PETIOCON");
     try {
+      console.log("PETIOCON");
+      
       const req = await fetch(`${API_URL}/user/signup`, {
         headers: {
           "Content-Type": "application/json",

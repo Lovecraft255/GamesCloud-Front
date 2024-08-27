@@ -9,24 +9,24 @@ interface AuthProviderProps {
 const AuthContext = createContext({
   isAuth: false,
   getAccessToken: () => {},
-  saveUser: (dataUser: AuthResponse) => {},
+  saveUser: (_dataUser: AuthResponse) => {},
   getRefreshToken: () => {},
+  getUser: () => ({} as User | undefined),
 });
 
-function AuthProvider({ children }: AuthProviderProps) {
+export default function AuthProvider({ children }: AuthProviderProps) {
   const [isAuth, setisAuth] = useState(false);
   const [accessToken, setaccestToken] = useState("");
   const [refreshToken, setrefreshToken] = useState("");
   const [user, setUser] = useState<User>();
 
-  useEffect(() => {}, []);
-
   async function ReqnewAccessToken(token: string) {
     try {
+      console.log("Peticion de tokenes haciendose");
       const req = await fetch(`${API_URL}/token/refresh_token`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${refreshToken}`,
+          Authorization: `Bearer ${token}`,
         },
         method: "POST",
       });
@@ -36,6 +36,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         if (json.error) {
           throw new Error(json.error);
         }
+
         return json.body.accessToken;
       } else {
         throw new Error(req.statusText);
@@ -48,7 +49,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function getUserInfo(accessToken: string) {
     try {
-      const req = await fetch(`${API_URL}/user/getuser`, {
+      const req = await fetch(`${API_URL}/user/usertoken`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -57,11 +58,14 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (req.ok) {
-        const json = (await req.json()) as AccessTokenResponse;
+        const json = await req.json();
         if (json.error) {
           throw new Error(json.error);
         }
-        return json.body.accessToken;
+        console.log(json.body);
+        console.log("aaaaaaaaaa");
+
+        return json.body;
       } else {
         throw new Error(req.statusText);
       }
@@ -72,11 +76,17 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function checkAuth() {
-    if (accessToken) {
-    } else {
+    const acessToken = localStorage.getItem("token");
+
+    if (acessToken) {
+      console.log("TOken petiocion");
+
       const token = getRefreshToken();
 
+      console.log(token);
+
       if (token) {
+        console.log("Peticion para el nuevo token");
         const newAccessToken = await ReqnewAccessToken(token);
         if (newAccessToken) {
           const userInfo = await getUserInfo(newAccessToken);
@@ -84,7 +94,11 @@ function AuthProvider({ children }: AuthProviderProps) {
             saveSessionInfo(userInfo, newAccessToken, token);
           }
         }
+      } else {
+        console.log("No hay token");
       }
+    } else {
+      console.log("NO TOKEN");
     }
   }
 
@@ -104,9 +118,13 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function getRefreshToken(): string | null {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const { refreshToken } = JSON.parse(token);
+    const tokenData = localStorage.getItem("token");
+    console.log(tokenData);
+    if (tokenData) {
+      const refreshToken = JSON.parse(tokenData);
+
+      setrefreshToken(refreshToken);
+
       return refreshToken;
     }
     return null;
@@ -119,15 +137,22 @@ function AuthProvider({ children }: AuthProviderProps) {
       dataUser.body.refreshToken
     );
   }
+
+  function getUser() {
+    return user;
+  }
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ isAuth, getAccessToken, saveUser, getRefreshToken }}
+      value={{ isAuth, getAccessToken, saveUser, getRefreshToken, getUser }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
-
-export default AuthProvider;
 
 export const useAuth = () => useContext(AuthContext);

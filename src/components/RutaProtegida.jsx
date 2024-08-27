@@ -4,7 +4,8 @@ import { useAuth } from "../auth/AuthProvider";
 
 function RutaProtegida() {
   const auth = useAuth()
-
+  console.log("es este log");
+  
   return auth.isAuth ? <Outlet /> : <Navigate to={"/"} />;
 }
 
