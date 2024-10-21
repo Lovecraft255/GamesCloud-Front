@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Juego from "./Juego";
-import { useAuth } from "../auth/AuthProvider";
 
 const ListaJuegos = () => {
-  const auth = useAuth();
-  console.log("AAA");
-
   const [juegos, setJuegos] = useState([]);
 
   useEffect(() => {
