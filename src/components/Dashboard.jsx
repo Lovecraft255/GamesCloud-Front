@@ -22,11 +22,6 @@ const ListaJuegos = () => {
         <Juego data={juegos} />
       </div>
     );
-  } else {
-    console.log("Se esta ejecutando");
-    console.log(auth);
-
-    return <div>Dashoard {auth.getUser()?.name || ""}</div>;
   }
 };
 

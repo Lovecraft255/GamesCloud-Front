@@ -1,22 +1,40 @@
 import Menu from "./Menu";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { singUp, user, isAuthenticated, errors: registerErrors } = useAuth();
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) navigation("/home");
+  }, [isAuthenticated]);
+
+  console.log(user);
 
   const registarse = handleSubmit(async (values) => {
-    const res = await registerRequest(values);
-    console.log(res);
+    singUp(values);
   });
 
   return (
     <div>
+      {registerErrors.map((error, i) => (
+        <div key={i}> {error} </div>
+      ))}
       <form onSubmit={registarse}>
         <input type="text" {...register("name", { required: true })} />
-        <input type="text" {...register("rol", { required: true })} />
+        {errors.name && <p>Nombre requerido</p>}
+        <input type="email" {...register("email", { required: true })} />
+        {errors.rol && <p>email requerido</p>}
         <input type="password" {...register("password", { required: true })} />
+        {errors.password && <p>Contraseña requerido</p>}
         <button type="sumbit">Registrarse</button>
       </form>
     </div>
