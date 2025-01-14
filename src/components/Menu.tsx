@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 const links = [
   {
-    name: "SignIn",
+    name: "Register",
     href: "/",
   },
   {
     name: "Home",
     href: "/home",
   },
-  { name: "SignUp", href: "/signUp" },
+  { name: "Login", href: "/login" },
 ];
 
 interface MenuProps {

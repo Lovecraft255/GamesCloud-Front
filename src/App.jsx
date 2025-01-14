@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Menu from "./components/Menu";
 import ListaJuegos from "./components/Dashboard";
 import Barrabuscadora from "./components/BarraBuscadora";
-import { AuthProvider } from "./Context/AuthContext";
-//import Login from "./components/Login";
+import { AuthProvider } from "../src/context/AuthContext";
+import Login from "./components/Login";
 import Register from "./components/Register";
 import {
   BrowserRouter,
@@ -16,9 +16,9 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Menu />
         <Routes>
           <Route path="/" element={<Register />} />
+          <Route path="login" element={<Login />} />
           <Route path="/home" element={<ListaJuegos />} />
         </Routes>
       </BrowserRouter>

@@ -3,8 +3,9 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const LogIn = () => {
+const Register = () => {
   const {
     register,
     handleSubmit,
@@ -32,13 +33,16 @@ const LogIn = () => {
         <input type="text" {...register("name", { required: true })} />
         {errors.name && <p>Nombre requerido</p>}
         <input type="email" {...register("email", { required: true })} />
-        {errors.rol && <p>email requerido</p>}
+        {errors.email && <p>email requerido</p>}
         <input type="password" {...register("password", { required: true })} />
         {errors.password && <p>Contraseña requerido</p>}
         <button type="sumbit">Registrarse</button>
       </form>
+      <p>
+        Ya tenes cuenta? <Link to={"/login"}>Inciar sesion</Link>{" "}
+      </p>
     </div>
   );
 };
 
-export default LogIn;
+export default Register;
