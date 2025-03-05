@@ -35,7 +35,7 @@ function Login() {
         {/* Corregí "sumbit" a "submit" */}
       </form>
       <p>
-        No tenes cuenta? <Link to={"/"}>Resgistrarse</Link>{" "}
+        No tenes cuenta? <Link to={"/register"}>Resgistrarse</Link>{" "}
       </p>
     </div>
   );
