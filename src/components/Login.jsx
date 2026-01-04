@@ -1,44 +1,88 @@
-import { useForm } from "react-hook-form";
-import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
-function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const { signIn, errors: signErrors = [] } = useAuth(); // Corregí "singinErrors" a "signinErrors"
-
-  const onSubmit = handleSubmit((data) => {
-    signIn(data);
+const Login = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
   });
 
-  useEffect(() => {
-    console.log("SIGN ERRORS", signErrors);
-  }, [signErrors]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/dashboard";
+
+  const handleChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      await login(formData.email, formData.password);
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.log(error);
+      setError(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div>
-      {signErrors.map((error, i) => (
-        <div key={i}>{error}</div>
-      ))}
-      <form onSubmit={onSubmit}>
-        <input type="email" {...register("email", { required: true })} />
-        {errors.email && <p>email requerido</p>}
-        <input type="password" {...register("password", { required: true })} />
-        {errors.password && <p>Contraseña requerida</p>}{" "}
-        {/* Corregí "requerido" a "requerida" */}
-        <button type="submit">Logearse</button>{" "}
-        {/* Corregí "sumbit" a "submit" */}
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Login</h2>
+
+        {error && <div className="error-message">{error}</div>}
+
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            autoComplete={"off"}
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
+        <div className="register-link">
+          <p>
+            ¿No tenés cuenta? <Link to="/register">Registrate acá</Link>
+          </p>
+        </div>
       </form>
-      <p>
-        No tenes cuenta? <Link to={"/register"}>Resgistrarse</Link>{" "}
-      </p>
     </div>
   );
-}
+};
 
 export default Login;

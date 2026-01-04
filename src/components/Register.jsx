@@ -1,48 +1,87 @@
-import Menu from "./Menu";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
-const Register = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const { singUp, user, isAuthenticated, errors: registerErrors } = useAuth();
-  const navigation = useNavigate();
+function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  useEffect(() => {
-    if (isAuthenticated) navigation("/home");
-  }, [isAuthenticated]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
 
-  console.log(user);
+    try {
+      const response = await fetch("http://localhost:3000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
 
-  const registarse = handleSubmit(async (values) => {
-    singUp(values);
-  });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al registrarse");
+      }
+
+      setSuccess("Registro completado con éxito. Redirigiendo...");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div>
-      {registerErrors.map((error, i) => (
-        <div key={i}> {error} </div>
-      ))}
-      <form onSubmit={registarse}>
-        <input type="text" {...register("name", { required: true })} />
-        {errors.name && <p>Nombre requerido</p>}
-        <input type="email" {...register("email", { required: true })} />
-        {errors.email && <p>email requerido</p>}
-        <input type="password" {...register("password", { required: true })} />
-        {errors.password && <p>Contraseña requerido</p>}
-        <button type="sumbit">Registrarse</button>
+      <h2>Register</h2>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Nombre:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit">Register</button>
       </form>
-      <p>
-        Ya tenes cuenta? <Link to={"/login"}>Inciar sesion</Link>{" "}
-      </p>
     </div>
   );
-};
+}
 
 export default Register;
