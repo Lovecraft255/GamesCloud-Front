@@ -1,7 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3001";
 
 class AuthService {
   constructor() {
@@ -16,7 +16,7 @@ class AuthService {
   async login(email, password) {
     try {
       const response = await axios.post(
-        `${API_URL}/auth/signin`,
+        `${API_URL}/auth/login`,
         { email, password },
         { withCredentials: true }
       );
@@ -30,6 +30,7 @@ class AuthService {
       this.accessToken = accessToken;
       return this.decodeToken(accessToken);
     } catch (error) {
+      console.error("Login failed:", error);
       throw new Error(error.response?.data?.message || "Login failed");
     }
   }
@@ -38,7 +39,7 @@ class AuthService {
     this.isRefreshing = null;
     this.failedQueue = [];
     return axios
-      .post(`${API_URL}/auth/signout`, {}, { withCredentials: true })
+      .post(`${API_URL}/auth/logout`, {}, { withCredentials: true })
       .catch((error) => {
         throw new Error(error.response?.data?.message || "Logout failed");
       });
@@ -46,7 +47,7 @@ class AuthService {
 
   register(username, email, password) {
     return axios.post(
-      `${API_URL}/auth/signup`,
+      `${API_URL}/auth/singup`,
       {
         username,
         email,
