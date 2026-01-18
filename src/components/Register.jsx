@@ -13,7 +13,7 @@ function Register() {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:3001/auth/singup", {
+      const response = await fetch("https://gamecloud-backend.onrender.com/auth/singup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

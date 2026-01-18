@@ -22,7 +22,7 @@ const ListaJuegos = () => {
     setLoading("Cargando...");
     try {
       const response = await apiService.get(
-        "http://localhost:3001/game/getgames"
+        "https://gamecloud-backend.onrender.com/game/getgames"
       );
       setData(response.data);
       setJuegos(response.data);

@@ -1,7 +1,7 @@
 import axios from "axios";
 import authService from "./authServices";
 
-const API_URL =  "http://localhost:3000";
+const API_URL =  "https://gamecloud-backend.onrender.com";
 
 const apiService = axios.create({
   baseURL: API_URL,

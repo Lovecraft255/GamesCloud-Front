@@ -1,7 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "http://localhost:3001";
+const API_URL = "https://gamecloud-backend.onrender.com";
 
 class AuthService {
   constructor() {
