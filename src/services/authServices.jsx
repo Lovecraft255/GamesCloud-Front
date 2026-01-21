@@ -11,7 +11,8 @@ class AuthService {
     this.accessTokenKey = "null";
   }
   configureAxios() {
-    axios.defaults.withCredentials = true;
+    aaxios.defaults.withCredentials = true;
+
   }
 
   async login(email, password) {
@@ -168,9 +169,3 @@ authService.configureAxios();
 
 export default authService;
 
-// ejemplo de uso:
-return fetchWithCredentials(url, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(payload)
-});
