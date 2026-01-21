@@ -67,4 +67,8 @@ apiService.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const fetchWithCredentials = (url, options = {}) =>
+  fetch(url, { credentials: 'include', ...options });
+
 export default apiService;

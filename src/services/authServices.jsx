@@ -1,5 +1,6 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { fetchWithCredentials } from './apiService';
 
 const API_URL = "https://gamecloud-backend.onrender.com";
 
@@ -166,3 +167,10 @@ const authService = new AuthService();
 authService.configureAxios();
 
 export default authService;
+
+// ejemplo de uso:
+return fetchWithCredentials(url, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(payload)
+});
