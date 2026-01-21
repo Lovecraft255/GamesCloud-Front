@@ -11,7 +11,7 @@ class AuthService {
     this.accessTokenKey = "null";
   }
   configureAxios() {
-    aaxios.defaults.withCredentials = true;
+    axios.defaults.withCredentials = true;
 
   }
 
