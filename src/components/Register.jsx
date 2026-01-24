@@ -7,6 +7,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,17 +15,20 @@ function Register() {
     setSuccess("");
 
     try {
-      const response = await fetch("https://gamecloud-backend.onrender.com/auth/singup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://gamecloud-backend.onrender.com/auth/singup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
         },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -34,7 +38,7 @@ function Register() {
 
       setSuccess("Registro completado con éxito. Redirigiendo...");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/login", { replace: true });
       }, 1500);
     } catch (err) {
       setError(err.message);
