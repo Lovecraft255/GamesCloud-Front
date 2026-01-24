@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [name, setName] = useState("");
@@ -33,7 +34,7 @@ function Register() {
 
       setSuccess("Registro completado con éxito. Redirigiendo...");
       setTimeout(() => {
-        window.location.href = "/login";
+        navigate("/login");
       }, 1500);
     } catch (err) {
       setError(err.message);
