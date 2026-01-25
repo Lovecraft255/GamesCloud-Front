@@ -13,11 +13,7 @@ const links = [
   { name: "Login", href: "/login" },
 ];
 
-interface MenuProps {
-  children: React.ReactNode;
-}
-
-function Menu({ children }: MenuProps) {
+function Menu({ children }) {
   return (
     <>
       <header className="flex justify-center bg-blue-900 text-gray-300">

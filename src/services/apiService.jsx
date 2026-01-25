@@ -1,7 +1,7 @@
 import axios from "axios";
 import authService from "./authServices";
 
-const API_URL =  "https://gamecloud-backend.onrender.com";
+const API_URL = "https://gamecloud-backend.onrender.com";
 
 const apiService = axios.create({
   baseURL: API_URL,
@@ -22,7 +22,7 @@ apiService.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 apiService.interceptors.response.use(
@@ -65,10 +65,10 @@ apiService.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const fetchWithCredentials = (url, options = {}) =>
-  fetch(url, { credentials: 'include', ...options });
+  fetch(url, { credentials: "include", ...options });
 
 export default apiService;
