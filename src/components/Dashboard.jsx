@@ -19,15 +19,18 @@ const ListaJuegos = () => {
   }, []);
 
   const fetchData = async () => {
+    4;
     setLoading("Cargando...");
     try {
       const response = await apiService.get(
-        "https://gamecloud-backend.onrender.com/game/getgames"
+        "https://gamecloud-backend.onrender.com/game/getgames",
       );
+      console.log("ENTRO AL FETCH");
       setData(response.data);
       setJuegos(response.data);
       setError("");
     } catch (err) {
+      console.error("FETCH ERROR:", err.response || err);
       setError("Error fetching data");
       setData(null);
     } finally {
@@ -59,7 +62,7 @@ const ListaJuegos = () => {
           <div className="user-info">
             <span>Welcome, {user?.username}!</span>
             <span className="user-email">({user?.email})</span>
-            <button onClick={fetchProtectedData}>Refresh Data</button>
+            <button onClick={fetchData}>Refresh Data</button>
             <button onClick={handleLogout}>Logout</button>
           </div>
         </header>
@@ -67,7 +70,7 @@ const ListaJuegos = () => {
         <main className="dashboard-content">
           {error && <div className="error-message">{error}</div>}
           <div className="user-details">
-            <h3>User Information (from JWT)</h3>
+            <h3>User Information </h3>
             <pre>{JSON.stringify(user, null, 2)}</pre>
           </div>
           <div>
@@ -85,6 +88,8 @@ const ListaJuegos = () => {
         </main>
       </div>
     );
+  } else {
+    return <div>No hay juegos disponibles</div>;
   }
 };
 

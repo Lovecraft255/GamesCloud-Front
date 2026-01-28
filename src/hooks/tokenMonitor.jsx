@@ -12,7 +12,7 @@ export const useTokenMonitor = () => {
       return;
     }
 
-    if (authService.isTokenExpired(token)) {
+    if (authService.isTokenValid(token)) {
       try {
         await authService.refreshToken();
 

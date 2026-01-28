@@ -1,6 +1,6 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { fetchWithCredentials } from './apiService';
+import { fetchWithCredentials } from "./apiService";
 
 const API_URL = "https://gamecloud-backend.onrender.com";
 
@@ -12,7 +12,6 @@ class AuthService {
   }
   configureAxios() {
     axios.defaults.withCredentials = true;
-
   }
 
   async login(email, password) {
@@ -20,7 +19,7 @@ class AuthService {
       const response = await axios.post(
         `${API_URL}/auth/login`,
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const { accessToken } = response.data;
@@ -55,7 +54,7 @@ class AuthService {
         email,
         password,
       },
-      { withCredentials: true }
+      { withCredentials: true },
     );
   }
 
@@ -106,30 +105,19 @@ class AuthService {
   }
 
   async refreshToken() {
-    try {
-      const response = await axios.post(
-        `${API_URL}/auth/refresh-token`,
-        {},
-        { withCredentials: true }
-      );
+    const response = await axios.post(
+      `${API_URL}/auth/refresh`,
+      {},
+      { withCredentials: true },
+    );
 
-      const { accessToken } = response.data;
-
-      if (accessToken) {
-        this.accessToken = accessToken;
-        return accessToken;
-      }
-
-      throw new Error("No access token received");
-    } catch (error) {
-      this.accessToken = null;
-      throw error;
-    }
+    this.accessToken = response.data.accessToken;
+    return this.accessToken;
   }
 
   async checkAuthStatus() {
     try {
-      const respones = await axios.get(`${API_URL}/auth/status`, {
+      const respones = await axios.get(`${API_URL}/auth/check`, {
         withCredentials: true,
         headers: this.accessToken
           ? { Authorization: `Bearer ${this.accessToken}` }
@@ -168,4 +156,3 @@ const authService = new AuthService();
 authService.configureAxios();
 
 export default authService;
-
