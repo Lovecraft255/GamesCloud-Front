@@ -1,7 +1,10 @@
 import axios from "axios";
 import authService from "./authServices";
 
-const API_URL = "https://gamecloud-backend.onrender.com";
+// En desarrollo usamos el proxy /api para evitar CORS; en producción apuntamos al backend real
+const API_URL = import.meta.env.DEV
+  ? "/api"
+  : "https://gamecloud-backend.onrender.com";
 
 const apiService = axios.create({
   baseURL: API_URL,
