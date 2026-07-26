@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../estilos/Menu.module.css";
+
 import { Link } from "react-router-dom";
 
 const links = [

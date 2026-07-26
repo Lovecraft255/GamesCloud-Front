@@ -1,11 +1,11 @@
 import React from "react";
 import Juego from "./Juego";
-import styles from "../estilos/Listajuego.module.css";
 
-const ListaJuegos = (juegos) => {
+
+const ListaJuegos = ({ juegos }) => {
   return (
-    <div className={styles["Lista-container"]}>
-      <Juego data={juegos} />
+    <div >
+      <Juego juegos={juegos} />
     </div>
   );
 };

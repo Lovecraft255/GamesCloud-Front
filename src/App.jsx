@@ -1,51 +1,27 @@
-import React, { useEffect, useState } from "react";
-import Menu from "./components/Menu";
-import ListaJuegos from "./components/ListaJuegos";
-import Barrabuscadora from "./components/BarraBuscadora";
-import SingIn from "./components/SingIn";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./auth/authContext";
+import ProtectedRoute from "./auth/protectedRoute";
+import Home from "./components/Home";
+import SignIn from "./components/SingIn";
 import SignUp from "./components/SignUp";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
 
-const App = () => {
-  const [juegos, setJuegos] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3001/game/getgames")
-      .then((res) => res.json())
-      .then((data) => {
-        setJuegos(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-  const pedirDatos = async (juego) => {
-    let url = "http://localhost:3001/game/getgame/";
-    url += juego;
-    const req = fetch(url);
-    req
-      .then((res) => res.json())
-      .then((game) => {
-        console.log(game);
-        setJuegos(game);
-      });
-  };
-
+export default function App() {
   return (
-    <div>
-      <Router>
-        <Menu />
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path="/singnIn" element={<SingIn />} />
-          <Route path="/home" element={<ListaJuegos juegos={juegos} />} />
-        </Routes>
-      </Router>
-      <Barrabuscadora pedirDatos={pedirDatos} />
-      <SignUp />
-    </div>
-  );
-};
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
 
-export default App;
+          {/* Everything nested here requires authentication */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}

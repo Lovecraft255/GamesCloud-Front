@@ -1,57 +1,49 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/authContext";
 
 const SignUp = () => {
   const [name, setName] = useState("");
-  const [rol, setRol] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const registrarse = async (e) => {
     e.preventDefault();
 
-    if (name === "" && rol === "" && password === "") {
-      setError(true);
+    if (name === "" || password === "") {
+      setError("Todos los campos son obligatorios");
       return;
-    } else {
-      let url = "http://localhost:3001/user/signup";
-      const req = fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:3001",
-        },
+    }
 
-        method: "POST",
-        body: JSON.stringify({ name: name, rol: rol, password: password }),
-      });
-      req
-        .then((res) => res.json())
-        .then((user) => {
-          console.log(user);
-        });
+    const result = await register(name, password);
+
+    if (result.success) {
+      navigate("/signin");
+    } else {
+      setError(result.message);
     }
   };
 
   return (
     <section>
-      <form onSubmit={registrarse} action="/signup" method="post">
+      <form onSubmit={registrarse}>
         <input
           type="text"
+          placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          type="text"
-          value={rol}
-          onChange={(e) => setRol(e.target.value)}
-        />
-        <input
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button>Registrarse</button>
+        <button type="submit">Registrarse</button>
       </form>
-      {error && <p>Todos los campos son obligatorios</p>}
+      {error && <p>{error}</p>}
     </section>
   );
 };

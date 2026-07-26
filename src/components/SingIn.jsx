@@ -1,52 +1,54 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../auth/authContext";
 
-const LogIn = () => {
+const SingIn = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const logearse = async (e) => {
     e.preventDefault();
-    if (name === "" && password === "") {
-      setError(true);
+
+    if (name === "" || password === "") {
+      setError("Los 2 campos son obligatorios");
       return;
+    }
+
+    const result = await login(name, password);
+
+    if (result.success) {
+      navigate(from, { replace: true });
     } else {
-      let url = "http://localhost:3001/user/singin";
-      const req = fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:3001",
-        },
-        method: "POST",
-        body: JSON.stringify({ name: name, password: password }),
-      });
-      req
-        .then((res) => res.json())
-        .then((user) => {
-          console.log(user);
-        });
+      setError(result.message);
     }
   };
 
   return (
     <section>
-      <form onSubmit={logearse} action="/singin" method="post">
+      <form onSubmit={logearse}>
         <input
           type="text"
+          placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <button>Iniciar Sesion</button>
+        <button type="submit">Iniciar Sesion</button>
       </form>
-      {error && <p>Los 2 campos son obligatorios</p>}
+      {error && <p>{error}</p>}
     </section>
   );
 };
 
-export default LogIn;
+export default SingIn;
