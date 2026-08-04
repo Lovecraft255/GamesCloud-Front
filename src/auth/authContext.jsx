@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext(null);
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API = import.meta.env.VITE_API_URL || "https://gamecloud-backend.onrender.com";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {

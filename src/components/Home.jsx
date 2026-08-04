@@ -56,7 +56,7 @@ export default function Home() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3001"}/game`, {
+    fetch(`${import.meta.env.VITE_API_URL || "https://gamecloud-backend.onrender.com"}/game`, {
       signal: controller.signal,
     })
       .then((res) => res.json())
