@@ -21,6 +21,5 @@ React 18 - Vite - react-router 7 - Context API - Bootstrap
 run dev`
 ## Estructura
 `/src/auth` `/src/components` `/src/app.jsx` `/src/main.jsx`
-• Registro/login con JWT • CRUD de recursos • Relaciones de datos
 ## Mejoras futuras
 Tests, Docker, TypeScript
