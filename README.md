@@ -17,7 +17,7 @@ React 18 - Vite - react-router 7 - Context API - Bootstrap
 <img width="1366" height="661" alt="Captura dashboard" src="https://github.com/user-attachments/assets/6c43a380-1fbc-46cd-b578-0507fb6b59eb" />
 
 ## Cómo ejecutar
-1. `git clone ...` 2. `npm install` 3. configurar `.env` (ver `.env.example`) 4. `npm
+1. `git clone ...` 2. `npm install` 3. `npm
 run dev`
 ## Estructura
 `/src/routes` `/src/controllers` `/src/m`
